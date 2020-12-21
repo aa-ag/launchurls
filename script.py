@@ -12,7 +12,7 @@ r = requests.get("https://api.github.com/users/aa-ag/repos")
 
 
 ##--- FUNCTIONS ---##
-def main():
+def get_links():
     global r
     # Checks if request gets successful response
     # if so, iterates over the all repos as a json object
@@ -35,5 +35,6 @@ def main():
         csvwriter.writerows(zip(names, urls))
 
 
+##--- DRIVER CODE ---##
 if __name__ == '__main__':
-    main()
+    get_links()

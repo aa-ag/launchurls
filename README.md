@@ -6,6 +6,7 @@ Python script to launch multiple URL's all at once from an excel file.
 
 #### TO DO
 
-- Write columns instead of rows.
+- Add row number
+- Check row count with API
 - Review & fix API call: currently getting only a few URL's
 - Write function to launch all of them at the same time.
