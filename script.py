@@ -4,15 +4,15 @@ import settings
 
 
 token = settings.GITHUB_TOKEN
-owner = 'aa-ag'
-repo = 'gitignore'
-query_url = f"https://api.github.com/repos/{owner}/{repo}"
-
-params = {
-    'state': 'open'
-}
-
 headers = {'Authorization': f'token {token}'}
+r = requests.get("https://api.github.com/users/aa-ag")
 
-r = requests.get(query_url, headers=headers, params=params)
-pprint(r.json())
+print(r.status_code)
+
+json = r.json()
+print(json)
+
+# for i in range(0, len(json)):
+#     print("Project number: ", i+1)
+#     print("Project name: ", json[i]['name'])
+#     print("Project URL: ", json[i]['svn_url'], '\n')
