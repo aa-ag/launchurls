@@ -5,7 +5,7 @@ import settings
 
 token = settings.GITHUB_TOKEN
 headers = {'Authorization': f'token {token}'}
-r = requests.get("https://api.github.com/users/aa-ag")
+r = requests.get("https://api.github.com/users/aa-ag/repos")
 
 print(r.status_code)
 
