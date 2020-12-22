@@ -9,4 +9,3 @@ Python script to launch multiple URL's all at once from an excel file.
 - Add row number
 - Check row count with API
 - Review & fix API call: currently getting only a few URL's
-- Write function to launch all of them at the same time.

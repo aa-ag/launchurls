@@ -8,8 +8,10 @@ import webbrowser
 
 ##--- GLOBAL VARIABLES ---##
 token = settings.GITHUB_TOKEN
+user = settings.GITHUB_USER
+# https://docs.github.com/en/free-pro-team@latest/rest/reference/users
 headers = {'Authorization': f'token {token}'}
-r = requests.get("https://api.github.com/users/aa-ag/repos")
+r = requests.get(f"https://api.github.com/users/{user}/repos")
 
 
 ##--- FUNCTIONS ---##
@@ -33,19 +35,20 @@ def get_links():
 
     with open(filename, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerows(zip(names, urls))
+        csv_writer.writerows(enumerate(zip(names, urls)))
 
 
-def open_links(all_repos):
-    # Once 'all_repos' has been created by get_links(),
-    # read the csv file and open all url's using webbrowser
-    with open(all_repos) as all_repos_csv:
-        csv_reader = csv.reader(all_repos_csv)
-        for row in csv_reader:
-            webbrowser.open_new_tab(row[1])
+# def open_links(all_repos):
+#     # Once 'all_repos' has been created by get_links(),
+#     # read the csv file and open all url's using webbrowser.
+#     # Iterating thru each row as they're each a list
+#     with open(all_repos) as all_repos_csv:
+#         csv_reader = csv.reader(all_repos_csv)
+#         for row in csv_reader:
+#             webbrowser.open_new_tab(row[1])
 
 
-    ##--- DRIVER CODE ---##
+##--- DRIVER CODE ---##
 if __name__ == '__main__':
     get_links()
-    open_links('all_repos.csv')
+    # open_links('all_repos.csv')
