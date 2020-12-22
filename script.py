@@ -4,6 +4,7 @@ from pprint import pprint
 import settings
 import csv
 import webbrowser
+import pprint
 
 
 ##--- GLOBAL VARIABLES ---##
@@ -11,18 +12,28 @@ token = settings.GITHUB_TOKEN
 user = settings.GITHUB_USER
 # https://docs.github.com/en/free-pro-team@latest/rest/reference/users
 headers = {'Authorization': f'token {token}'}
-r = requests.get(f"https://api.github.com/users/{user}/repos")
+# r = requests.get(f"https://api.github.com/users/{user}/repos")
+# "A call to List public repositories provides paginated items in sets of 30,
+# whereas a call to the GitHub Search API provides items in sets of 100
+# You can specify how many items to receive (up to a maximum of 100)"
+r = requests.get(
+    f"https://api.github.com/users/{user}/repos?per_page=100")
 
 
 ##--- FUNCTIONS ---##
-def get_links():
-    global r
+
+
+def get_links(req):
     # Checks if request gets successful response
     # if so, iterates over the all repos as a json object
     # and makes two lists: one with names, another with urls.
     # Finally, creates CSV file with resulting data
-    if r.status_code == 200:
-        all_repos = r.json()
+    if req.status_code == 200:
+        all_repos = req.json()
+
+        # TEST: seeing data structure
+        # for i in all_repos:
+        #     pprint.pprint(i)
 
         names = list()
         urls = list()
@@ -52,5 +63,5 @@ def open_links(all_repos):
 
 ##--- DRIVER CODE ---##
 if __name__ == '__main__':
-    get_links()
+    get_links(r)
     # open_links('all_repos.csv')
