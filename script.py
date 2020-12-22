@@ -35,17 +35,19 @@ def get_links():
 
     with open(filename, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerows(enumerate(zip(names, urls)))
+        csv_writer.writerow(["#", "Repo Name", "URL"])
+        csv_writer.writerows(
+            zip([i + 1 for i in range(len(names))], names, urls))
 
 
-# def open_links(all_repos):
-#     # Once 'all_repos' has been created by get_links(),
-#     # read the csv file and open all url's using webbrowser.
-#     # Iterating thru each row as they're each a list
-#     with open(all_repos) as all_repos_csv:
-#         csv_reader = csv.reader(all_repos_csv)
-#         for row in csv_reader:
-#             webbrowser.open_new_tab(row[1])
+def open_links(all_repos):
+    # Once 'all_repos' has been created by get_links(),
+    # read the csv file and open all url's using webbrowser.
+    # Iterating thru each row as they're each a list
+    with open(all_repos) as all_repos_csv:
+        csv_reader = csv.reader(all_repos_csv)
+        for row in csv_reader:
+            webbrowser.open_new_tab(row[1])
 
 
 ##--- DRIVER CODE ---##
