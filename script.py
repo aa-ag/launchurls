@@ -3,6 +3,7 @@ import requests
 from pprint import pprint
 import settings
 import csv
+import webbrowser
 
 
 ##--- GLOBAL VARIABLES ---##
@@ -31,10 +32,20 @@ def get_links():
         filename = "all_repos.csv"
 
     with open(filename, 'w') as csv_file:
-        csvwriter = csv.writer(csv_file)
-        csvwriter.writerows(zip(names, urls))
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerows(zip(names, urls))
 
 
-##--- DRIVER CODE ---##
+def open_links(all_repos):
+    # Once 'all_repos' has been created by get_links(),
+    # read the csv file and open all url's using webbrowser
+    with open(all_repos) as all_repos_csv:
+        csv_reader = csv.reader(all_repos_csv)
+        for row in csv_reader:
+            webbrowser.open_new_tab(row[1])
+
+
+    ##--- DRIVER CODE ---##
 if __name__ == '__main__':
     get_links()
+    open_links('all_repos.csv')
