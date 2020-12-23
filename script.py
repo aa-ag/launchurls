@@ -58,7 +58,7 @@ def open_links(all_repos):
     with open(all_repos) as all_repos_csv:
         csv_reader = csv.reader(all_repos_csv)
         for row in csv_reader:
-            webbrowser.open_new_tab(row[1])
+            webbrowser.open_new_tab(row[2])
 
 
 ##--- DRIVER CODE ---##
