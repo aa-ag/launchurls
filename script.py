@@ -8,16 +8,16 @@ import pprint
 
 
 ##--- GLOBAL VARIABLES ---##
-token = settings.GITHUB_TOKEN
-user = settings.GITHUB_USER
+github_token = settings.GITHUB_TOKEN
+github_username = settings.GITHUB_USER
 # https://docs.github.com/en/free-pro-team@latest/rest/reference/users
-headers = {'Authorization': f'token {token}'}
+headers = {'Authorization': f'token {github_token}'}
 # r = requests.get(f"https://api.github.com/users/{user}/repos")
 # "A call to List public repositories provides paginated items in sets of 30,
 # whereas a call to the GitHub Search API provides items in sets of 100
 # You can specify how many items to receive (up to a maximum of 100)"
 r = requests.get(
-    f"https://api.github.com/users/{user}/repos?per_page=100")
+    f"https://api.github.com/users/{github_username}/repos?per_page=100")
 
 
 ##--- FUNCTIONS ---##
@@ -42,7 +42,11 @@ def get_links(req):
             names.append(repo['name'])
             urls.append(repo['svn_url'])
 
-        filename = "all_repos.csv"
+        # shorten URL's
+        # INSERT HERE
+
+    # create a file where data will be saved to
+    filename = "all_repos.csv"
 
     with open(filename, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
@@ -64,4 +68,4 @@ def open_links(all_repos):
 ##--- DRIVER CODE ---##
 if __name__ == '__main__':
     get_links(r)
-    open_links('all_repos.csv')
+    # open_links('all_repos.csv')

@@ -6,4 +6,5 @@ Python script to launch multiple URL's all at once from an excel file.
 
 #### TO DO
 
-- Check row count with API
+- check row count with API
+- shorten urls `total_private_repos`
