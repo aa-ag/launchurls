@@ -1,10 +1,14 @@
 # Launch URLs
 
-Python script to launch multiple URL's all at once from an excel file. 
+Python script to launch multiple URL's all at once from an CSV/excel file. 
 
-`script.py` will use Github's API to grab all URL's (repos) from a user's account and save them into a CSV or other type of file. Then, it will launch them through the browser all at the same time. 
+`script.py` uses Github's API to grab all URL's (repos) from a user's account and save them into a CSV, alphabetically.
+
+Optionally, urls can be shortened using Bitly's API.
+
+Then, the script launches them through the browser all at the same time. 
 
 #### TO DO
 
 - check row count with API
-- shorten urls `total_private_repos`
+- check how to save chronologically

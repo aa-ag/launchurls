@@ -13,23 +13,24 @@ import settings
 github_token = settings.GITHUB_TOKEN
 github_username = settings.GITHUB_USER
 # https://docs.github.com/en/free-pro-team@latest/rest/reference/users
-headers = {'Authorization': f'token {github_token}'}
+github_headers = {'Authorization': f'token {github_token}'}
 # r = requests.get(f"https://api.github.com/users/{user}/repos")
 # "A call to List public repositories provides paginated items in sets of 30,
 # whereas a call to the GitHub Search API provides items in sets of 100
 # You can specify how many items to receive (up to a maximum of 100)"
 r = requests.get(
-    f"https://api.github.com/users/{github_username}/repos?per_page=100")
+    f"https://api.github.com/users/{github_username}/repos?per_page=3")
 
 bitly_username = settings.BITLY_USERNAME
 bitly_pswd = settings.BITLY_PSWD
-access_token = settings.BITLY_TOKEN
+bitly_access_token = settings.BITLY_TOKEN
+bitly_guid = settings.BITLY_GUID
 
 
 ##--- FUNCTIONS ---##
 
 
-def get_links(req):
+def get_links_from_github(req):
     # Checks if request gets successful response
     # if so, iterates over the all repos as a json object
     # and makes two lists: one with names, another with urls.
@@ -50,7 +51,7 @@ def get_links(req):
 
         # shorten URL's
         # [!] optional
-        short_urls = [shorten_url_with_bitly(link) for link in urls]
+        short_urls = [shorten_urls_with_bitly(link) for link in urls]
 
         # create a file where data will be saved to
     filename = "all_repos.csv"
@@ -62,7 +63,7 @@ def get_links(req):
             zip([i + 1 for i in range(len(names))], names, short_urls))
 
 
-def shorten_url_with_bitly(link):
+def shorten_urls_with_bitly(link):
     url = f'{link}'
     # Three steps required to short urls with Bitly's API:
     # (1) generate access token,
@@ -75,28 +76,29 @@ def shorten_url_with_bitly(link):
     #     'https://api-ssl.bitly.com/oauth/access_token', auth=(bitly_username, bitly_pswd))
 
     # if auth_res.status_code == 200:
-    #     access_token = auth_res.content.decode()
-    #     print(f"[!] Access token: {access_token}")
+    #     bitly_access_token = auth_res.content.decode()
+    #     print(f"[!] Access token: {bitly_access_token}")
     # else:
     #     print("[!] Couldn't get access token, exiting...")
     #     exit()
 
     # (2)
-    headers = {"Authorization": f"Bearer {access_token}"}
+    bitly_headers = {"Authorization": f"Bearer {bitly_access_token}"}
 
-    group_res = requests.get(
-        'https://api-ssl.bitly.com/v4/groups', headers=headers)
+    # group_res = requests.get(
+    #     'https://api-ssl.bitly.com/v4/groups', headers=bitly_headers)
 
-    if group_res.status_code == 200:
-        groups_data = group_res.json()['groups'][0]
-        guid = groups_data['guid']
-    else:
-        print("[!] Couldn't get GUID, exiting...")
-        exit()
+    # if group_res.status_code == 200:
+    #     groups_data = group_res.json()['groups'][0]
+    #     guid = groups_data['guid']
+    #     print(guid)
+    # else:
+    #     print("[!] Couldn't get GUID, exiting...")
+    #     exit()
 
     # (3)
     shorten_res = requests.post("https://api-ssl.bitly.com/v4/shorten",
-                                json={'group_guid': guid, 'long_url': url}, headers=headers)
+                                json={'group_guid': bitly_guid, 'long_url': url}, headers=bitly_headers)
 
     if shorten_res.status_code == 200:
         shortened_url = shorten_res.json().get('link')
@@ -115,5 +117,5 @@ def open_links(all_repos):
 
 ##--- DRIVER CODE ---##
 if __name__ == '__main__':
-    get_links(r)
-    # open_links('all_repos.csv')
+    get_links_from_github(r)
+    open_links('all_repos.csv')
