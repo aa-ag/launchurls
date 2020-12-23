@@ -64,4 +64,4 @@ def open_links(all_repos):
 ##--- DRIVER CODE ---##
 if __name__ == '__main__':
     get_links(r)
-    # open_links('all_repos.csv')
+    open_links('all_repos.csv')
