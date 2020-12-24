@@ -10,5 +10,4 @@ Then, the script launches them through the browser all at the same time.
 
 #### TO DO
 
-- check row count with API
 - check how to save chronologically

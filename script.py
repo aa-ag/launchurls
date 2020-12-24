@@ -21,6 +21,10 @@ github_headers = {'Authorization': f'token {github_token}'}
 r = requests.get(
     f"https://api.github.com/users/{github_username}/repos?per_page=3")
 
+github_user = requests.get(f'https://api.github.com/users/{github_username}')
+public_repos_count = github_user.json()['public_repos']
+print(public_repos_count)  # if < 100, script needs to consider pagination
+
 bitly_username = settings.BITLY_USERNAME
 bitly_pswd = settings.BITLY_PSWD
 bitly_access_token = settings.BITLY_TOKEN
@@ -116,6 +120,6 @@ def open_links(all_repos):
 
 
 ##--- DRIVER CODE ---##
-if __name__ == '__main__':
-    get_links_from_github(r)
-    open_links('all_repos.csv')
+# if __name__ == '__main__':
+#     get_links_from_github(r)
+#     open_links('all_repos.csv')
