@@ -7,6 +7,7 @@ import webbrowser
 import pprint
 import requests
 import settings
+# from datetime import datetime
 
 
 ##--- GLOBAL VARIABLES ---##
@@ -19,11 +20,11 @@ github_headers = {'Authorization': f'token {github_token}'}
 # whereas a call to the GitHub Search API provides items in sets of 100
 # You can specify how many items to receive (up to a maximum of 100)"
 r = requests.get(
-    f"https://api.github.com/users/{github_username}/repos?per_page=3")
+    f"https://api.github.com/users/{github_username}/repos?per_page=100")
 
 github_user = requests.get(f'https://api.github.com/users/{github_username}')
 public_repos_count = github_user.json()['public_repos']
-print(public_repos_count)  # if < 100, script needs to consider pagination
+# print(public_repos_count)  # if < 100, script needs to consider pagination
 
 bitly_username = settings.BITLY_USERNAME
 bitly_pswd = settings.BITLY_PSWD
@@ -40,15 +41,15 @@ def get_links_from_github(req):
     # and makes two lists: one with names, another with urls.
     # Finally, creates CSV file with resulting data
     if req.status_code == 200:
-        all_repos = req.json()
+        all_repos = req.json()  # list
 
-        # TEST: seeing data structure
-        # for i in all_repos:
-        #     pprint.pprint(i)
+        # all_repos_sorted_chronologically = sorted(
+        #     [repo for repo in all_repos], key=lambda date: datetime.strptime(repo['pushed_at'], '%d %b %Y'))
 
         names = list()
         urls = list()
 
+        # [!] optional: could sort chronologically or alphabetically
         for repo in all_repos:
             names.append(repo['name'])
             urls.append(repo['svn_url'])
@@ -64,7 +65,7 @@ def get_links_from_github(req):
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(["#", "Repo Name", "URL"])
         csv_writer.writerows(
-            zip([i + 1 for i in range(len(names))], names, short_urls))
+            zip([i + 1 for i in range(len(names) + 2)], names, urls))
 
 
 def shorten_urls_with_bitly(link):
@@ -120,6 +121,6 @@ def open_links(all_repos):
 
 
 ##--- DRIVER CODE ---##
-# if __name__ == '__main__':
-#     get_links_from_github(r)
+if __name__ == '__main__':
+    get_links_from_github(r)
 #     open_links('all_repos.csv')

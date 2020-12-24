@@ -10,4 +10,4 @@ Then, the script launches them through the browser all at the same time.
 
 #### TO DO
 
-- check how to save chronologically
+- last shortened url bug
